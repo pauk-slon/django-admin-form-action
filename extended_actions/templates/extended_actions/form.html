@@ -1,0 +1,13 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+<form action="" method="post">{% csrf_token %}
+    {{ form }}
+    <input type="submit" name="perform" value="{% trans "Perform" %}" />
+    <input type="hidden" name="action" value="{{ action }}" />
+</form>
+<p>{% trans "The action will be performed for the following objects:" %}:</p>
+<ul>{{ items|unordered_list }}</ul>
+
+{% endblock %}
