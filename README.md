@@ -5,6 +5,6 @@ Parametrized actions for Django admin site
 
 ```shell script
 poetry install
-poetry run django-admin migrate --settings='tests.app.settings'
-poetry run django-admin runserver --settings='tests.app.settings'
+poetry run django-admin migrate --settings=tests.app.settings
+poetry run django-admin runserver --settings=tests.app.settings
 ```
