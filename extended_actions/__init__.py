@@ -1,6 +1,6 @@
 __version__ = '0.1.0'
 
-from typing import Type, Callable
+from typing import Type, Callable, AnyStr, Optional
 
 from django import forms
 from django.contrib import admin
@@ -19,7 +19,9 @@ class FormMixin(forms.Form):
         self.fields[admin.ACTION_CHECKBOX_NAME] = forms.CharField(widget=forms.MultipleHiddenInput)
 
 
-def extended_action(form_class):  # type: (Type[forms.Form]) -> Callable
+def extended_action(form_class, short_description=None):
+    # type: (Type[forms.Form], Optional[AnyStr]) -> Callable
+
     class _Form(FormMixin, form_class):
         pass
 
@@ -44,6 +46,8 @@ def extended_action(form_class):  # type: (Type[forms.Form]) -> Callable
                 'action': action_method.__name__,
                 'action_submit_parameter':  action_submit_parameter,
             })
+        if short_description:
+            _wrapper.short_description = short_description
         return _wrapper
 
     return _decorator
