@@ -3,11 +3,11 @@
 
 {% block content %}
 <form action="" method="post">{% csrf_token %}
-    {{ form }}
-    <input type="submit" name="perform" value="{% trans "Perform" %}" />
-    <input type="hidden" name="action" value="{{ action }}" />
+    {{ form.as_p }}
+    <p><input type="hidden" name="action" value="{{ action }}" /></p>
+    <p><input type="submit" name="{{ action_submit_parameter }}" value="{% trans "Perform" %}" /></p>
 </form>
-<p>{% trans "The action will be performed for the following objects:" %}:</p>
+<p>{% trans "The objects to perform action for" %}:</p>
 <ul>{{ items|unordered_list }}</ul>
 
 {% endblock %}
