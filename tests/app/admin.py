@@ -6,7 +6,7 @@ from django.contrib.auth.admin import UserAdmin as UserAdminBase
 from django.contrib.auth.models import User, Group
 from django.utils.translation import gettext_lazy as _
 
-from extended_actions import extended_action
+from extended_actions import form_parametrized_action
 
 
 admin.site.unregister(User)
@@ -20,7 +20,7 @@ class AddToGroupForm(forms.Form):
 class UserAdmin(UserAdminBase):
     actions = UserAdminBase.actions + ['add_to_groups']
 
-    @extended_action(AddToGroupForm, _('Add selected users to groups'))
+    @form_parametrized_action(AddToGroupForm, _('Add selected users to groups'))
     def add_to_groups(self, request, queryset, form):
         groups = form.cleaned_data['groups']  # type: Iterable[Group]
         for user in queryset:  # type: User

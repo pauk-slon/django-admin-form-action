@@ -19,7 +19,7 @@ class FormMixin(forms.Form):
         self.fields[admin.ACTION_CHECKBOX_NAME] = forms.CharField(widget=forms.MultipleHiddenInput)
 
 
-def extended_action(form_class, short_description=None):
+def form_parametrized_action(form_class, short_description=None):
     # type: (Type[forms.Form], Optional[AnyStr]) -> Callable
 
     class _Form(FormMixin, form_class):
