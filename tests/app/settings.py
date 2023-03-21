@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'extended_actions',
-    'tests.app'
+    'admin_form_action',
+    'tests.app',
 ]
 
 MIDDLEWARE = [
