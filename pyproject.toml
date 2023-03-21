@@ -23,8 +23,11 @@ django = ">=3"
 [tool.poetry.group.dev.dependencies]
 pytest = "*"
 pytest-django = "*"
+pytest-cov = "*"
 
 [tool.pytest.ini_options]
 addopts = [
     "--ds=tests.app.settings",
+    "--cov=admin_form_action",
+    "--cov-report=term-missing:skip-covered",
 ]
