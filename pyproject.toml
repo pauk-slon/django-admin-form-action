@@ -21,6 +21,7 @@ python = "^3.7"
 django = ">=3"
 
 [tool.poetry.group.dev.dependencies]
+model-bakery = "*"
 pytest = "*"
 pytest-django = "*"
 pytest-cov = "*"
