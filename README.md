@@ -1,4 +1,4 @@
-# django-admin-extended-actions
+# django-admin-form-action
 Parametrized actions for Django admin site
 
 ## Run demo app
