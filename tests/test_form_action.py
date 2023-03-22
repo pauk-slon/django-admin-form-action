@@ -59,3 +59,5 @@ def test_form_action_performing(admin_client, users: list[User], groups_to_add: 
     for group in Group.objects.all():
         if group in groups_to_add:
             assert set(group.user_set.all()) == set(users)
+        else:
+            assert not set(group.user_set.all()).intersection(set(users))
