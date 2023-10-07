@@ -33,6 +33,20 @@ class UserAdmin(admin.ModelAdmin):
             groups_form.add_user(user)
 ```
 
+## Install
+
+```shell
+pip install django-admin-form-action
+```
+
+```python
+INSTALLED_APPS = [
+    ...
+    'admin_form_action',
+    ...
+]
+```
+
 ## Run demo app
 
 ```shell script
