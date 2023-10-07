@@ -1,3 +1,5 @@
+from typing import Optional
+
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as UserAdminBase
@@ -36,7 +38,7 @@ class UserAdmin(UserAdminBase):
         self,
         request: HttpRequest,
         queryset: QuerySet[User],
-    ) -> HttpResponse | None:
+    ) -> Optional[HttpResponse]:
         request = form_action(GroupsForm).cast_request(request)
         groups_form = request.form
         for user in queryset:
@@ -49,7 +51,7 @@ class UserAdmin(UserAdminBase):
         self,
         request: HttpRequest,
         queryset: QuerySet[User],
-    ) -> HttpResponse | None:
+    ) -> Optional[HttpResponse]:
         request = form_action(GroupsForm).cast_request(request)
         groups_form = request.form
         for user in queryset:
