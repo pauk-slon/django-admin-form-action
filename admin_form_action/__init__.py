@@ -1,5 +1,5 @@
 from functools import wraps
-from typing import Callable, Final, Type
+from typing import Callable, Final, Generic, Optional, Type, TypeVar
 
 from django import forms
 from django.contrib.admin import ModelAdmin
@@ -11,37 +11,52 @@ from django.shortcuts import render
 _ACTION_SUBMIT_PARAMETER: Final = 'perform'
 
 
-class _InputFormMixin(forms.Form):
+class _FormMixin(forms.Form):
     def __init__(self, *args, **kwargs):
         self.queryset = kwargs.pop('queryset')
-        super(_InputFormMixin, self).__init__(*args, **kwargs)
+        super(_FormMixin, self).__init__(*args, **kwargs)
         self.fields[ACTION_CHECKBOX_NAME] = (
             forms.CharField(widget=forms.MultipleHiddenInput)
         )
 
 
-ActionMethod = Callable[[ModelAdmin, HttpRequest, QuerySet], HttpResponse]
+FormT = TypeVar('FormT', bound=forms.Form)
+ModelAdminT = TypeVar('ModelAdminT', bound=ModelAdmin)
 
 
-def form_action(form_class: Type[forms.Form]) -> Callable[[ActionMethod], ActionMethod]:
+class InjectedHttpRequest(Generic[FormT], HttpRequest):
+    form: FormT
 
-    class _InputForm(_InputFormMixin, form_class):
-        pass
 
-    def _decorator(action_method: ActionMethod) -> ActionMethod:
+ActionMethod = Callable[[ModelAdminT, HttpRequest, QuerySet], Optional[HttpResponse]]
+WrappedActionMethod = Callable[
+    [ModelAdminT, InjectedHttpRequest[FormT], QuerySet],
+    Optional[HttpResponse],
+]
+
+
+def form_action(
+    form_class: Type[FormT],
+) -> Callable[[ActionMethod[ModelAdminT]], WrappedActionMethod[ModelAdminT, FormT]]:
+    form_class_name = '_Action%s' % form_class.__name__
+    _Form = type(form_class_name, (_FormMixin, form_class), {})
+
+    def _decorator(
+        action_method: ActionMethod[ModelAdminT],
+    ) -> WrappedActionMethod[ModelAdminT, FormT]:
         @wraps(action_method)
         def _wrapper(
-            model_admin: ModelAdmin,
-            request: HttpRequest,
+            model_admin: ModelAdminT,
+            request: InjectedHttpRequest,
             queryset: QuerySet,
-        ) -> HttpResponse:
+        ) -> Optional[HttpResponse]:
             if _ACTION_SUBMIT_PARAMETER in request.POST:
-                form = _InputForm(request.POST, queryset=queryset)
+                form = _Form(request.POST, queryset=queryset)
                 if form.is_valid():
                     request.form = form
                     return action_method(model_admin, request, queryset)
             else:
-                form = _InputForm(
+                form = _Form(
                     initial={
                         ACTION_CHECKBOX_NAME: (
                             request.POST.getlist(ACTION_CHECKBOX_NAME)

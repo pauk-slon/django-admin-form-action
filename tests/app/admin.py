@@ -1,10 +1,14 @@
+from typing import cast
+
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as UserAdminBase
 from django.contrib.auth.models import Group, User
+from django.db.models import QuerySet
+from django.http import HttpRequest, HttpResponse
 from django.utils.translation import gettext_lazy as _
 
-from admin_form_action import form_action
+from admin_form_action import InjectedHttpRequest, form_action
 
 admin.site.unregister(User)
 
@@ -30,14 +34,26 @@ class UserAdmin(UserAdminBase):
 
     @form_action(GroupsForm)
     @admin.action(description=_('Add selected users to certain groups'))
-    def add_to_groups(self, request, queryset):
-        groups_form: GroupsForm = request.form
+    def add_to_groups(
+        self,
+        request: HttpRequest,
+        queryset: QuerySet,
+    ) -> HttpResponse | None:
+        request = cast(InjectedHttpRequest[GroupsForm], request)
+        groups_form = request.form
         for user in queryset:  # type: User
             groups_form.add_user(user)
+        return None
 
     @form_action(GroupsForm)
     @admin.action(description=_('Remove selected users from certain groups'))
-    def remove_from_groups(self, request, queryset):
-        groups_form: GroupsForm = request.form
+    def remove_from_groups(
+        self,
+        request: HttpRequest,
+        queryset: QuerySet,
+    ) -> HttpResponse | None:
+        request = cast(InjectedHttpRequest[GroupsForm], request)
+        groups_form = request.form
         for user in queryset:  # type: User
             groups_form.remove_user(user)
+        return None

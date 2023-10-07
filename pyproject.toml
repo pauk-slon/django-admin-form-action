@@ -27,6 +27,14 @@ pytest-django = "*"
 pytest-cov = "*"
 isort = "*"
 ruff = "*"
+mypy = "*"
+django-stubs = {extras = ["compatible-mypy"], version = "*"}
+
+[tool.mypy]
+plugins = ["mypy_django_plugin.main"]
+
+[tool.django-stubs]
+django_settings_module = "tests.app.settings"
 
 [tool.pytest.ini_options]
 addopts = [
