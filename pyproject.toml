@@ -4,7 +4,10 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "django-admin-form-action"
-packages = [{ include = "admin_form_action" }]
+packages = [
+    { include = "admin_form_action" },
+    { include = "admin_form_action/py.typed" },
+]
 license = "MIT"
 version = "0.1.0"
 description = "Parametrized actions for Django admin site"
@@ -27,6 +30,15 @@ pytest-django = "*"
 pytest-cov = "*"
 isort = "*"
 ruff = "*"
+mypy = "*"
+django-stubs = {extras = ["compatible-mypy"], version = "*"}
+django-stubs-ext = "*"
+
+[tool.mypy]
+plugins = ["mypy_django_plugin.main"]
+
+[tool.django-stubs]
+django_settings_module = "tests.app.settings"
 
 [tool.pytest.ini_options]
 addopts = [
