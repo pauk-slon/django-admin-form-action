@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from typing import List
 
 import pytest
 from django.contrib.auth.models import Group, User
@@ -6,22 +7,22 @@ from model_bakery import baker
 
 
 @pytest.fixture
-def users(admin_user) -> list[User]:
+def users(admin_user) -> List[User]:
     return baker.make(User, _quantity=5) + [admin_user]
 
 
 @pytest.fixture
-def groups_to_add() -> list[Group]:
+def groups_to_add() -> List[Group]:
     return baker.make(Group, _quantity=2)
 
 
 @pytest.fixture(autouse=True)
-def groups(groups_to_add: list[Group]) -> list[Group]:
+def groups(groups_to_add: List[Group]) -> List[Group]:
     return baker.make(Group, _quantity=2) + groups_to_add
 
 
 @pytest.mark.django_db
-def test_form_action_init(admin_client, users: list[User]):
+def test_form_action_init(admin_client, users: List[User]):
     request_data = {
         'action': 'add_to_groups',
         '_selected_action': [user.id for user in users],
@@ -49,8 +50,8 @@ def test_form_action_invalid(admin_client, users):
 @pytest.mark.django_db
 def test_form_action_performing(
     admin_client,
-    users: list[User],
-    groups_to_add: list[Group],
+    users: List[User],
+    groups_to_add: List[Group],
 ):
     request_data = {
         'action': 'add_to_groups',
