@@ -1,0 +1,36 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "django-admin-form-action"
+packages = [{ include = "admin_form_action" }]
+license = "MIT"
+version = "0.1.0"
+description = "Parametrized actions for Django admin site"
+authors = ["Dmitry Kolyagin <dmitry.kolyagin@gmail.com>"]
+repository = "https://github.com/pauk-slon/django-admin-extended-actions"
+readme = "README.md"
+classifiers = [
+    "Framework :: Django :: 3",
+    "Framework :: Django :: 4"
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+django = ">=3"
+
+[tool.poetry.group.dev.dependencies]
+model-bakery = "*"
+pytest = "*"
+pytest-django = "*"
+pytest-cov = "*"
+isort = "*"
+ruff = "*"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--ds=tests.app.settings",
+    "--cov=admin_form_action",
+    "--cov-report=term-missing:skip-covered",
+]
