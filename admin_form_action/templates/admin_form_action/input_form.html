@@ -8,6 +8,7 @@
 {% endblock %}
 {% block content %}
 <div id="content-main">
+    <h1>{{ description|capfirst }}</h1>
     <form action="" method="post">{% csrf_token %}
         <fieldset class="module aligned">
             {{ form.as_p }}
