@@ -64,6 +64,10 @@ class Decorator(Generic[ModelAdminT, FormT]):
                     },
                     queryset=queryset,
                 )
+            if hasattr(action_method, 'short_description'):
+                description = action_method.short_description
+            else:
+                description = action_method.__name__.replace('_', ' ')
             return render(
                 request=request,
                 template_name='admin_form_action/input_form.html',
@@ -72,6 +76,7 @@ class Decorator(Generic[ModelAdminT, FormT]):
                     'form': form,
                     'action': action_method.__name__,
                     'action_submit_parameter': _ACTION_SUBMIT_PARAMETER,
+                    'description': description,
                 }
             )
 
