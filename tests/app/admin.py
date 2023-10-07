@@ -37,11 +37,11 @@ class UserAdmin(UserAdminBase):
     def add_to_groups(
         self,
         request: HttpRequest,
-        queryset: QuerySet,
+        queryset: QuerySet[User],
     ) -> HttpResponse | None:
         request = cast(InjectedHttpRequest[GroupsForm], request)
         groups_form = request.form
-        for user in queryset:  # type: User
+        for user in queryset:
             groups_form.add_user(user)
         return None
 
@@ -50,10 +50,10 @@ class UserAdmin(UserAdminBase):
     def remove_from_groups(
         self,
         request: HttpRequest,
-        queryset: QuerySet,
+        queryset: QuerySet[User],
     ) -> HttpResponse | None:
         request = cast(InjectedHttpRequest[GroupsForm], request)
         groups_form = request.form
-        for user in queryset:  # type: User
+        for user in queryset:
             groups_form.remove_user(user)
         return None

@@ -29,6 +29,7 @@ isort = "*"
 ruff = "*"
 mypy = "*"
 django-stubs = {extras = ["compatible-mypy"], version = "*"}
+django-stubs-ext = "*"
 
 [tool.mypy]
 plugins = ["mypy_django_plugin.main"]
