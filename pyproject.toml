@@ -25,6 +25,8 @@ model-bakery = "*"
 pytest = "*"
 pytest-django = "*"
 pytest-cov = "*"
+isort = "*"
+ruff = "*"
 
 [tool.pytest.ini_options]
 addopts = [

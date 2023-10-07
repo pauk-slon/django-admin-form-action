@@ -1,8 +1,8 @@
 from http import HTTPStatus
 
+import pytest
 from django.contrib.auth.models import Group, User
 from model_bakery import baker
-import pytest
 
 
 @pytest.fixture
@@ -47,7 +47,11 @@ def test_form_action_invalid(admin_client, users):
 
 
 @pytest.mark.django_db
-def test_form_action_performing(admin_client, users: list[User], groups_to_add: list[Group]):
+def test_form_action_performing(
+    admin_client,
+    users: list[User],
+    groups_to_add: list[Group],
+):
     request_data = {
         'action': 'add_to_groups',
         '_selected_action': [user.id for user in users],
@@ -55,7 +59,8 @@ def test_form_action_performing(admin_client, users: list[User], groups_to_add: 
         'groups': [group.id for group in groups_to_add],
     }
     response = admin_client.post('/admin/auth/user/', request_data)
-    assert response.status_code == HTTPStatus.OK
+    assert response.status_code == HTTPStatus.FOUND
+    assert response.headers['Location'] == '/admin/auth/user/'
     for group in Group.objects.all():
         if group in groups_to_add:
             assert set(group.user_set.all()) == set(users)
