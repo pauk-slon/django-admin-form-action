@@ -27,6 +27,7 @@ class UserAdmin(admin.ModelAdmin):
     @form_action(GroupsForm)
     @admin.action(description='Add selected users to certain groups')
     def add_to_groups(self, request, queryset):
+        # Validated form is injected by `@form_action` to `request.form`
         groups_form = request.form
         for user in queryset:
             groups_form.add_user(user)
