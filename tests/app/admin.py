@@ -1,5 +1,3 @@
-from typing import cast
-
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as UserAdminBase
@@ -8,7 +6,7 @@ from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.utils.translation import gettext_lazy as _
 
-from admin_form_action import InjectedHttpRequest, form_action
+from admin_form_action import form_action
 
 admin.site.unregister(User)
 
@@ -39,7 +37,7 @@ class UserAdmin(UserAdminBase):
         request: HttpRequest,
         queryset: QuerySet[User],
     ) -> HttpResponse | None:
-        request = cast(InjectedHttpRequest[GroupsForm], request)
+        request = form_action(GroupsForm).cast_request(request)
         groups_form = request.form
         for user in queryset:
             groups_form.add_user(user)
@@ -52,7 +50,7 @@ class UserAdmin(UserAdminBase):
         request: HttpRequest,
         queryset: QuerySet[User],
     ) -> HttpResponse | None:
-        request = cast(InjectedHttpRequest[GroupsForm], request)
+        request = form_action(GroupsForm).cast_request(request)
         groups_form = request.form
         for user in queryset:
             groups_form.remove_user(user)

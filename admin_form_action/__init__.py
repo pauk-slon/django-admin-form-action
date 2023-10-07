@@ -1,5 +1,5 @@
 from functools import wraps
-from typing import Callable, Final, Generic, Optional, Type, TypeVar
+from typing import Callable, Final, Generic, Optional, Type, TypeVar, cast
 
 from django import forms
 from django.contrib.admin import ModelAdmin
@@ -35,28 +35,28 @@ WrappedActionMethod = Callable[
 ]
 
 
-def form_action(
-    form_class: Type[FormT],
-) -> Callable[[ActionMethod[ModelAdminT]], WrappedActionMethod[ModelAdminT, FormT]]:
-    form_class_name = '_Action%s' % form_class.__name__
-    _Form = type(form_class_name, (_FormMixin, form_class), {})
+class Decorator(Generic[ModelAdminT, FormT]):
+    def __init__(self, form_class: Type[FormT]):
+        form_class_name = '_Action%s' % form_class.__name__
+        self.form_class = type(form_class_name, (_FormMixin, form_class), {})
 
-    def _decorator(
+    def __call__(
+        self,
         action_method: ActionMethod[ModelAdminT],
     ) -> WrappedActionMethod[ModelAdminT, FormT]:
         @wraps(action_method)
         def _wrapper(
-            model_admin: ModelAdminT,
-            request: InjectedHttpRequest,
-            queryset: QuerySet,
+                model_admin: ModelAdminT,
+                request: InjectedHttpRequest,
+                queryset: QuerySet,
         ) -> Optional[HttpResponse]:
             if _ACTION_SUBMIT_PARAMETER in request.POST:
-                form = _Form(request.POST, queryset=queryset)
+                form = self.form_class(request.POST, queryset=queryset)
                 if form.is_valid():
                     request.form = form
                     return action_method(model_admin, request, queryset)
             else:
-                form = _Form(
+                form = self.form_class(
                     initial={
                         ACTION_CHECKBOX_NAME: (
                             request.POST.getlist(ACTION_CHECKBOX_NAME)
@@ -74,5 +74,13 @@ def form_action(
                     'action_submit_parameter': _ACTION_SUBMIT_PARAMETER,
                 }
             )
+
         return _wrapper
-    return _decorator
+
+    @staticmethod
+    def cast_request(request: HttpRequest) -> InjectedHttpRequest[FormT]:
+        return cast(InjectedHttpRequest[FormT], request)
+
+
+def form_action(form_class: Type[FormT]) -> Decorator[ModelAdminT, FormT]:
+    return Decorator[ModelAdminT, FormT](form_class)
