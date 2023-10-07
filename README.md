@@ -59,7 +59,7 @@ poetry run django-admin migrate --settings=tests.app.settings
 poetry run django-admin runserver --settings=tests.app.settings
 ```
 
-[codecov-image]: https://codecov.io/gh/pauk-slon/django-admin-form-action/branch/main/graph/badge.svg?token=QCY3CW2ZVG
+[codecov-image]: https://codecov.io/gh/pauk-slon/django-admin-form-action/graph/badge.svg?token=QCY3CW2ZVG
 [codecov-link]: https://codecov.io/gh/pauk-slon/django-admin-form-action
 [test-status-image]: https://github.com/pauk-slon/django-admin-form-action/actions/workflows/test.yaml/badge.svg
 [test-status-link]: https://github.com/pauk-slon/django-admin-form-action/actions/workflows/test.yaml
