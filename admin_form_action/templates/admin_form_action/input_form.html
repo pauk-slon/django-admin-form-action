@@ -1,13 +1,28 @@
 {% extends "admin/base_site.html" %}
-{% load i18n %}
-
+{% load i18n static %}
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet"
+        type="text/css"
+        href="{% static "admin/css/forms.css" %}">
+{% endblock %}
 {% block content %}
-<form action="" method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <p><input type="hidden" name="action" value="{{ action }}" /></p>
-    <p><input type="submit" name="{{ action_submit_parameter }}" value="{% trans "Perform" %}" /></p>
-</form>
-<p>{% trans "The objects to perform the action for" %}:</p>
-<ul>{{ items|unordered_list }}</ul>
-
+<div id="content-main">
+    <form action="" method="post">{% csrf_token %}
+        <fieldset class="module aligned">
+            {{ form.as_p }}
+        </fieldset>
+        <p><input type="hidden" name="action" value="{{ action }}" /></p>
+        <p class="submit-row">
+            <input type="submit"
+                   name="{{ action_submit_parameter }}"
+                   value="{% trans "Perform" %}"
+                   class="default" />
+        </p>
+    </form>
+    <fieldset class="module aligned">
+    <h2>{% trans "The objects to perform the action for" %}:</h2>
+        <ul>{{ items|unordered_list }}</ul>
+    </fieldset>
+</div>
 {% endblock %}
