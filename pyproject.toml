@@ -9,7 +9,7 @@ packages = [
     { include = "admin_form_action/py.typed" },
 ]
 license = "MIT"
-version = "0.2.0"
+version = "1.0.0"
 description = "Parametrized actions for Django admin site"
 authors = ["Dmitry Kolyagin <dmitry.kolyagin@gmail.com>"]
 repository = "https://github.com/pauk-slon/django-admin-form-action"
