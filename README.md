@@ -2,6 +2,7 @@
 
 [![Test Status][test-status-image]][test-status-link]
 [![codecov][codecov-image]][codecov-link]
+[![Python Support][python-support-image]][python-support-link]
 
 `django-admin-form-action` is intended to implement parametrized actions on the Django admin site. 
 Action parameters are passed through an intermediate form as it shown below.
@@ -81,3 +82,5 @@ poetry run mypy .
 [codecov-link]: https://codecov.io/gh/pauk-slon/django-admin-form-action
 [test-status-image]: https://github.com/pauk-slon/django-admin-form-action/actions/workflows/test.yaml/badge.svg
 [test-status-link]: https://github.com/pauk-slon/django-admin-form-action/actions/workflows/test.yaml
+[python-support-image]: https://img.shields.io/pypi/pyversions/django-admin-form-action.svg
+[python-support-link]: https://pypi.org/project/django-admin-form-action/
