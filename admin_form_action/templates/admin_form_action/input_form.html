@@ -29,7 +29,8 @@
                    class="default" />
         </p>
     </form>
-    <h2>{% trans "The objects to perform the action for" %}:</h2>
+    {% trans "selected" as selected %}
+    <h2>{{ selected|capfirst }} {{ opts.verbose_name_plural }}</h2>
     <ul>{{ items|unordered_list }}</ul>
 </div>
 {% endblock %}
