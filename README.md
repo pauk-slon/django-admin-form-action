@@ -6,7 +6,7 @@
 `django-admin-form-action` is intended to implement parametrized actions on the Django admin site. 
 Action parameters are passed through an intermediate form as it shown below.
 
-![demo](demo.gif "Demo")
+![demo](https://github.com/pauk-slon/django-admin-form-action/assets/2351932/a6c67b47-0fde-4d9e-9c23-cb50e9a87e48)
 
 The demonstrated functionality can be implemented with `django-admin-form-action` in the following way:
 
