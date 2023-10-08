@@ -1,0 +1,28 @@
+{% extends "admin_form_action/form.html" %}
+{% block content %}
+    <h1>{{ description|capfirst }}</h1>
+    {% csrf_token %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="fieldWrapper">
+                {% if not field.is_hidden %}
+                    {{ field.errors }}
+                    {{ field.label_tag }}
+                {% endif %}
+                {{ field }}
+                {% if not field.is_hidden %}
+                    {% if field.help_text %}
+                        <p class="help">{{ field.help_text|safe }}</p>
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endfor %}
+        <div>Users: {{ items|join:", " }}</div>
+        <div>
+            <input type="submit"
+                   name="{{ action_submit_parameter }}"
+                   value="Perform" />
+        </div>
+    </form>
+{% endblock %}

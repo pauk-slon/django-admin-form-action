@@ -17,11 +17,11 @@
 {% block content %}
 <div id="content-main">
     <h1>{{ description|capfirst }}</h1>
-    <form action="" method="post">{% csrf_token %}
+    <form action="" method="post">
+        {% csrf_token %}
         <fieldset class="module aligned">
             {{ form.as_p }}
         </fieldset>
-        <p><input type="hidden" name="action" value="{{ action }}" /></p>
         <p class="submit-row">
             <input type="submit"
                    name="{{ action_submit_parameter }}"
