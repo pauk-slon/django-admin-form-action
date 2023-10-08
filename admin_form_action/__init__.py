@@ -77,6 +77,7 @@ class Decorator(Generic[ModelAdminT, FormT]):
                     'action': action_method.__name__,
                     'action_submit_parameter': _ACTION_SUBMIT_PARAMETER,
                     'description': description,
+                    'opts': model_admin.model._meta,
                 }
             )
 
