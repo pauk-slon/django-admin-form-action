@@ -1,4 +1,4 @@
-# django-admin-form-action
+# django-admin-form-action [![Latest Version][latest-version-image]][latest-version-link]
 
 [![Test Status][test-status-image]][test-status-link]
 [![codecov][codecov-image]][codecov-link]
@@ -75,6 +75,8 @@ poetry run ruff .
 poetry run mypy .
 ```
 
+[latest-version-image]: https://img.shields.io/pypi/v/django-admin-form-action.svg
+[latest-version-link]: https://pypi.org/project/django-admin-form-action/
 [codecov-image]: https://codecov.io/gh/pauk-slon/django-admin-form-action/graph/badge.svg?token=QCY3CW2ZVG
 [codecov-link]: https://codecov.io/gh/pauk-slon/django-admin-form-action
 [test-status-image]: https://github.com/pauk-slon/django-admin-form-action/actions/workflows/test.yaml/badge.svg
