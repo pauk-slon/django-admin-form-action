@@ -31,6 +31,18 @@ def test_form_action_init(admin_client, users: List[User]):
     assert response.status_code == HTTPStatus.OK
     assert 'groups' in response.context['form'].fields
     assert response.context['items'].count() == len(users)
+    assert response.context['description'] == 'Add selected users to certain groups'
+
+
+@pytest.mark.django_db
+def test_form_auto_description(admin_client, users: List[User]):
+    request_data = {
+        'action': 'remove_from_groups',
+        '_selected_action': [user.id for user in users],
+    }
+    response = admin_client.post('/admin/auth/user/', request_data)
+    assert response.status_code == HTTPStatus.OK
+    assert response.context['description'] == 'remove from groups'
 
 
 @pytest.mark.django_db

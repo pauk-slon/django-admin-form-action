@@ -48,9 +48,6 @@ class UserAdmin(UserAdminBase):
         return None
 
     @form_action(GroupsForm)
-    @admin.action(
-        description=_('Remove selected %(verbose_name_plural)s from certain groups'),
-    )
     def remove_from_groups(
         self,
         request: HttpRequest,
