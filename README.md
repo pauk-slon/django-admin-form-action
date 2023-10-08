@@ -51,12 +51,28 @@ INSTALLED_APPS = [
 ]
 ```
 
-## Run demo app
+## Development
 
-```shell script
+### Run demo app
+
+```shell
 poetry install
 poetry run django-admin migrate --settings=tests.app.settings
 poetry run django-admin runserver --settings=tests.app.settings
+```
+
+### Test
+
+```shell
+poetry run pytest
+```
+
+### Lint
+
+```shell
+poetry run isort .
+poetry run ruff . 
+poetry run mypy .
 ```
 
 [codecov-image]: https://codecov.io/gh/pauk-slon/django-admin-form-action/graph/badge.svg?token=QCY3CW2ZVG
