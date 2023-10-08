@@ -47,7 +47,10 @@ class UserAdmin(UserAdminBase):
             groups_form.add_user(user)
         return None
 
-    @form_action(GroupsForm)
+    @form_action(
+        GroupsForm,
+        template='admin_form_action/custom_form.html',
+    )
     def remove_from_groups(
         self,
         request: HttpRequest,

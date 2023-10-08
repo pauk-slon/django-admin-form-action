@@ -18,6 +18,7 @@ class _FormMixin(forms.Form):
         self.fields[ACTION_CHECKBOX_NAME] = (
             forms.CharField(widget=forms.MultipleHiddenInput)
         )
+        self.fields['action'] = forms.CharField(widget=forms.HiddenInput)
 
 
 FormT = TypeVar('FormT', bound=forms.Form)
@@ -36,9 +37,12 @@ WrappedActionMethod = Callable[
 
 
 class Decorator(Generic[ModelAdminT, FormT]):
-    def __init__(self, form_class: Type[FormT]):
+    default_form_template: Final = 'admin_form_action/form.html'
+
+    def __init__(self, form_class: Type[FormT], form_template: Optional[str] = None):
         form_class_name = '_Action%s' % form_class.__name__
         self.form_class = type(form_class_name, (_FormMixin, form_class), {})
+        self.form_template = form_template
 
     def __call__(
         self,
@@ -61,6 +65,7 @@ class Decorator(Generic[ModelAdminT, FormT]):
                         ACTION_CHECKBOX_NAME: (
                             request.POST.getlist(ACTION_CHECKBOX_NAME)
                         ),
+                        'action': action_method.__name__,
                     },
                     queryset=queryset,
                 )
@@ -73,11 +78,10 @@ class Decorator(Generic[ModelAdminT, FormT]):
                 description = action_method.__name__.replace('_', ' ')
             return render(
                 request=request,
-                template_name='admin_form_action/input_form.html',
+                template_name=self.form_template or self.default_form_template,
                 context={
                     'items': queryset,
                     'form': form,
-                    'action': action_method.__name__,
                     'action_submit_parameter': _ACTION_SUBMIT_PARAMETER,
                     'description': description,
                     'opts': options,
@@ -91,5 +95,9 @@ class Decorator(Generic[ModelAdminT, FormT]):
         return cast(InjectedHttpRequest[FormT], request)
 
 
-def form_action(form_class: Type[FormT]) -> Decorator[ModelAdminT, FormT]:
-    return Decorator[ModelAdminT, FormT](form_class)
+def form_action(
+    form_class: Type[FormT],
+    *,
+    template: Optional[str] = None,
+) -> Decorator[ModelAdminT, FormT]:
+    return Decorator[ModelAdminT, FormT](form_class, template)
