@@ -33,7 +33,9 @@ class UserAdmin(UserAdminBase):
         return ', '.join(str(group) for group in obj.groups.all())
 
     @form_action(GroupsForm)
-    @admin.action(description=_('Add selected users to certain groups'))
+    @admin.action(
+        description=_('Add selected %(verbose_name_plural)s to certain groups'),
+    )
     def add_to_groups(
         self,
         request: HttpRequest,
@@ -46,7 +48,9 @@ class UserAdmin(UserAdminBase):
         return None
 
     @form_action(GroupsForm)
-    @admin.action(description=_('Remove selected users from certain groups'))
+    @admin.action(
+        description=_('Remove selected %(verbose_name_plural)s from certain groups'),
+    )
     def remove_from_groups(
         self,
         request: HttpRequest,

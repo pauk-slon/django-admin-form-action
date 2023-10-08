@@ -64,8 +64,11 @@ class Decorator(Generic[ModelAdminT, FormT]):
                     },
                     queryset=queryset,
                 )
+            options = model_admin.model._meta
             if hasattr(action_method, 'short_description'):
-                description = action_method.short_description
+                description = action_method.short_description % {
+                    'verbose_name_plural': options.verbose_name_plural,
+                }
             else:
                 description = action_method.__name__.replace('_', ' ')
             return render(
@@ -77,7 +80,7 @@ class Decorator(Generic[ModelAdminT, FormT]):
                     'action': action_method.__name__,
                     'action_submit_parameter': _ACTION_SUBMIT_PARAMETER,
                     'description': description,
-                    'opts': model_admin.model._meta,
+                    'opts': options,
                 }
             )
 
