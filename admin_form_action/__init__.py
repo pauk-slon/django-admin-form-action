@@ -14,7 +14,7 @@ _ACTION_SUBMIT_PARAMETER: Final = 'perform'
 class _FormMixin(forms.Form):
     def __init__(self, *args, **kwargs):
         self.queryset = kwargs.pop('queryset')
-        super(_FormMixin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields[ACTION_CHECKBOX_NAME] = (
             forms.CharField(widget=forms.MultipleHiddenInput)
         )
@@ -25,7 +25,7 @@ FormT = TypeVar('FormT', bound=forms.Form)
 ModelAdminT = TypeVar('ModelAdminT', bound=ModelAdmin)
 
 
-class InjectedHttpRequest(Generic[FormT], HttpRequest):
+class InjectedHttpRequest(HttpRequest, Generic[FormT]):
     form: FormT
 
 
@@ -40,7 +40,7 @@ class Decorator(Generic[ModelAdminT, FormT]):
     default_form_template: Final = 'admin_form_action/form.html'
 
     def __init__(self, form_class: Type[FormT], form_template: Optional[str] = None):
-        form_class_name = '_Action%s' % form_class.__name__
+        form_class_name = f'_Action{form_class.__name__}'
         self.form_class = type(form_class_name, (_FormMixin, form_class), {})
         self.form_template = form_template
 
