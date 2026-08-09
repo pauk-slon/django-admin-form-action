@@ -72,7 +72,7 @@ poetry run pytest
 
 ```shell
 poetry run isort .
-poetry run ruff . 
+poetry run ruff check .
 poetry run mypy .
 ```
 
